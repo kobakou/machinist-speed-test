@@ -1,13 +1,13 @@
-##### include config #####
+##### include user settings #####
 . ".\config.ps1"
 
-##### ’è”ƒZƒbƒg #####
+##### config #####
 $URI = 'https://gw.machinist.iij.jp/endpoint'
 $HEADER = @{
     Authorization = "Bearer $API_KEY"
 }
 
-##### ƒf[ƒ^¶¬ #####
+##### generate data #####
 $RESULT = (.\speedtest.exe -s 48463 -f csv --output-header | ConvertFrom-Csv | Select-Object @{
         name='Download'
         expr={[Int]$_.download * 8}
@@ -35,10 +35,10 @@ $DATA = @{
         }
     )
 }
-$BODY = $DATA | ConvertTo-Json -Depth 5  # DepthƒIƒvƒVƒ‡ƒ“‚ª–³‚¢‚Ædata_point“à‚ªJSON‰»‚³‚ê‚È‚¢
+$BODY = $DATA | ConvertTo-Json -Depth 5  # Depthã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒç„¡ã„ã¨data_pointå†…ãŒJSONåŒ–ã•ã‚Œãªã„
 
 echo $URI
 echo $BODY
 
-##### ƒf[ƒ^‘—M #####
+##### post data #####
 Invoke-RestMethod -Method Post -ContentType 'application/json' -Headers $HEADER -Uri $URI -Body $BODY
