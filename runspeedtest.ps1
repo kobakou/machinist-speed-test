@@ -13,6 +13,10 @@ $RESULT = (.\speedtest.exe -s 48463 -f csv --output-header | ConvertFrom-Csv | S
         expr={[Int]$_.download * 8}
     },
     @{
+        name='Upload'
+        expr={[Int]$_.upload * 8}
+    },
+    @{
         name='RTT'
         expr={$_.'idle latency'}
     })
@@ -27,6 +31,12 @@ $DATA = @{
             }
         },
         @{
+            name = "Upload"
+            namespace = "Speedtest.net"
+            data_point = @{
+                value = $RESULT.Upload
+            }
+        },        @{
             name = "RTT"
             namespace = "Speedtest.net"
             data_point = @{
