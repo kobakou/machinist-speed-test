@@ -19,6 +19,10 @@ $RESULT = (.\speedtest.exe -s 48463 -f csv --output-header | ConvertFrom-Csv | S
     @{
         name='RTT'
         expr={$_.'idle latency'}
+    },
+    @{
+        name='PacketLoss'
+        expr={$_.'packet loss'}
     })
 $DATA = @{
     agent_id = $AGENT_ID
@@ -36,11 +40,19 @@ $DATA = @{
             data_point = @{
                 value = $RESULT.Upload
             }
-        },        @{
+        },
+        @{
             name = "RTT"
             namespace = "Speedtest.net"
             data_point = @{
                 value = [double]$RESULT.RTT
+            }
+        },
+        @{
+            name = "PacketLoss"
+            namespace = "Speedtest.net"
+            data_point = @{
+                value = [double]$RESULT.PacketLoss
             }
         }
     )
